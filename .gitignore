@@ -2,4 +2,5 @@
 build
 .vscode
 /*/.vscode
-
+/*/.cache
+/*/.DS_Store
