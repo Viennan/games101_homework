@@ -1,0 +1,32 @@
+cmake_minimum_required(VERSION 3.16)
+project(PathTracingCuda 
+  VERSION 0.1 
+  DESCRIPTION "An example path tracing with cuda"
+  LANGUAGES CXX CUDA)
+
+find_package(OpenCV REQUIRED)
+
+if(NOT DEFINED CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE "Debug")
+endif()
+
+if(NOT DEFINED CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_STANDARD_REQUIRED True)
+endif()
+
+if(NOT DEFINED CMAKE_CUDA_STANDARD)
+    set(CMAKE_CUDA_STANDARD 17)
+    set(CMAKE_CUDA_STANDARD_REQUIRED True)
+endif()
+
+if(NOT DEFINED CMAKE_CUDA_GENCODE)
+    set(CMAKE_CUDA_GENCODE "arch=compute_61,code=sm_61") # My card is "GeForce GTX 1060 6GB notebook"
+endif()
+
+set(CMAKE_CUDA_SEPARABLE_COMPILATION True)
+set(CMAKE_CUDA_RUNTIME_LIBRARY, Static)
+
+set(SOURCES main.cu)
+add_executable(${PROJECT_NAME} ${SOURCES})
+target_compile_options(${PROJECT_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:"-gencode ${CMAKE_CUDA_GENCODE}">)
